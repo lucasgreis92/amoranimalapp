@@ -1,0 +1,37 @@
+<ion-view view-title="Adoções" >
+  <ion-floating-button click="goAdocao()" has-footer="true" button-color="#ffff40" icon="ion-plus" icon-color="#fff">
+  </ion-floating-button>
+  <ion-content >
+ <!--  <div class="bar bar-header bar-energized  item-input-inset">
+          <label class="item-input-wrapper">
+            <i class="icon ion-ios-search placeholder-icon "></i>
+            <input type="search" placeholder="Search" ng-change="srchchange()" ng-model="adn.item">
+          </label>
+          <button class="button button-clear " ng-click="ressetserach()"><i class="ion-android-cancel assertive"></i>
+            <strong> Cancelar </strong>
+          </button>
+        </div> -->
+
+    <ion-list>
+      <ion-item ng-repeat="adocao in adocoes">
+        <div class="item-remove-animate item-avatar item-icon-right"  type="item-text-wrap" >
+          <img ng-src="{{adocao.adotante.urlImagem}}">
+          <h2>Adotante: {{adocao.adotante.nome}}</h2>
+          <p>Animal: {{adocao.animal.nome}} ({{adocao.animal.tpAnimal}})</p>
+          <p>Endereço: {{adocao.adotante.cidade}}, {{adocao.adotante.logradouro}}, {{adocao.adotante.numero}}, {{adocao.adotante.bairro}}</p>
+          <p>Última visita: {{adocao.adotante.dtUltAcomp | date:'dd/MM/yyyy'}} </p>
+        </div>
+        <br/>
+
+        <visita-ocorrencia qt-ocorrencias="{{adocao.adotante.ocorrencias.length}}"
+                           qt-visitas="{{adocao.adotante.visitas.length}}"
+                           qt-devolucoes={{adocao.adotante.devolucoes.length}}
+                           id-adocao={{adocao.id}}>
+
+        </visita-ocorrencia>
+      </ion-item>
+    </ion-list>
+   
+
+  </ion-content>
+</ion-view>

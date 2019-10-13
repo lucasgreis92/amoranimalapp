@@ -1,0 +1,96 @@
+<ion-view view-title="Animal">
+  <ion-content>
+    <div class="list ">
+      <div class="item item-avatar" ng-if="animal.id">
+        <img ng-src="{{animal.urlImagem}}" />
+        <h2>Animal: {{animal.nome}} ({{animal.tpAnimal}})</h2>
+        <p ng-if="animal.nomeAdotante">Adotante: {{animal.nomeAdotante}} </p>
+      </div>
+
+      <div class="item item-body">
+        <img class="full-image" ng-src="{{animal.urlImagem}}" ng-click="getCamera()"/>
+        <visita-ocorrencia qt-ocorrencias="{{animal.ocorrencias.length}}"
+                           qt-visitas="{{animal.visitas.length}}"
+                           id-animal={{animal.id}}
+                           ng-if="animal.id">
+
+        </visita-ocorrencia>
+        </br>
+        <div class="list">
+          <div class="item item-input-inset">
+            <label class="item-input-wrapper">
+              <input type="text" placeholder="Nome" ng-model="animal.nome">
+            </label>
+          </div>
+          </br>
+          Tipo animal
+          <ion-list>
+            <ion-radio name="tpAnimal" ng-model="animal.tpAnimal" ng-value="'Cachorro'">Cachorro</ion-radio>
+            <ion-radio name="tpAnimal" ng-model="animal.tpAnimal" ng-value="'Gato'">Gato</ion-radio>
+          </ion-list>
+          </br>
+          Sexo
+          <ion-list>
+            <ion-radio name="sexo" ng-model="animal.sexo" ng-value="'Masculino'">Masculino</ion-radio>
+            <ion-radio name="sexo" ng-model="animal.sexo" ng-value="'Feminino'">Feminino</ion-radio>
+          </ion-list>
+          </br>
+          Idade
+          <div class="list">
+            <div class="item range range-positive">
+              <i class="icon ion-ios-minus-outline"></i>
+              <input type="range" name="volume" min="0" max="30" value="1" ng-model="animal.idade">
+              <i class="icon ion-ios-plus-outline"></i>
+              <span class="input-label">{{animal.idade}} ano(s) </span>
+            </div>
+          </div>
+
+
+          <ul class="list">
+            <li class="item item-toggle">
+              Vacina V8
+              <label class="toggle toggle-energized">
+                <input type="checkbox" ng-model="animal.vacinaV8">
+                <div class="track">
+                  <div class="handle"></div>
+                </div>
+              </label>
+            </li>
+            <li class="item item-toggle">
+              Vacina Raiva
+              <label class="toggle toggle-energized">
+                <input type="checkbox" ng-model="animal.vacinaRaiva">
+                <div class="track">
+                  <div class="handle"></div>
+                </div>
+              </label>
+            </li>
+            <li class="item item-toggle">
+              Vermifugado
+              <label class="toggle toggle-energized">
+                <input type="checkbox" ng-model="animal.vermifugado">
+                <div class="track">
+                  <div class="handle"></div>
+                </div>
+              </label>
+            </li>
+            <li class="item item-toggle">
+              Castrado
+              <label class="toggle toggle-energized">
+                <input type="checkbox" ng-model="animal.castrado">
+                <div class="track">
+                  <div class="handle"></div>
+                </div>
+              </label>
+            </li>
+          </ul>
+        </div>
+        <button class="button button-block button-balanced" ng-click="salvar()">
+          Salvar
+        </button>
+      </div>
+
+    </div>
+
+  </ion-content>
+</ion-view>

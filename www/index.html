@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="initial-scale=1, maximum-scale=1, user-scalable=no, width=device-width">
+  <title></title>
+
+  <link rel="manifest" href="manifest.json">
+
+  <link href="lib/ionic/css/ionic.css" rel="stylesheet">
+  <link href="css/style.css" rel="stylesheet">
+  <link href="css/animate.css" rel="stylesheet">
+  <link href="lib/ion-floating-menu/dist/ion-floating-menu.css" rel="stylesheet" type="text/css"/>
+  <script src="lib/ionic/js/ionic.bundle.js"></script>
+
+  <!-- cordova script (this will be a 404 during development) -->
+  <script src="cordova.js"></script>
+
+  <!-- your app's js -->
+  <script src="js/app.js"></script>
+  <script src="js/controllers.js"></script>
+  <script src="js/services.js"></script>
+  <script src="lib/ion-floating-menu/dist/ion-floating-menu.js" type="text/javascript"></script>
+
+
+
+</head>
+<body ng-app="starter">
+
+<ion-nav-bar class="bar-energized fade" ng-if="headerVisible && !isSearching">
+
+  <ion-nav-back-button>
+  </ion-nav-back-button>
+  <ion-nav-buttons side="center">
+
+  </ion-nav-buttons>
+  <ion-nav-buttons side="right" >
+    <button class="button button-icon button-clear ion-ios-search-strong " ng-click="startSearch()">
+    </button>
+    <button class="button button-outline button-light" ng-click="goLogin()" >
+      Sair
+    </button>
+  </ion-nav-buttons>
+</ion-nav-bar>
+
+<ion-nav-view >
+  <div class="bar bar-header bar-energized item-input-inset fade" ng-if="headerVisible && isSearching">
+    <label class="item-input-wrapper">
+      <i class="icon ion-ios-search placeholder-icon"></i>
+      <input type="search" placeholder="Search">
+    </label>
+    <button class="button icon-left ion-close-circled" ng-click="stopSearch()">
+      Cancel
+    </button>
+  </div>
+</ion-nav-view>
+</body>
+</html>

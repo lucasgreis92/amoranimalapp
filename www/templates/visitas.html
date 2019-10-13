@@ -1,0 +1,54 @@
+<ion-modal-view>
+ <ion-nav-bar class="bar bar-energized">
+  
+  <ion-nav-buttons side="left" >
+    <button class="button button-icon button-clear ion-ios-arrow-back" ng-click="hideVisitasModal()"> 
+    </button>
+  </ion-nav-buttons>
+  <ion-nav-title>
+    {{visitasModalTitle}} 
+  </ion-nav-title>
+ </ion-nav-bar>
+  <ion-content class="has-header">
+    <ion-list>
+      <ion-item ng-repeat="visita in objeto.visitas" ng-if="visitasModalTitle == 'Visitas'">
+      	<p>Data: {{visita.data | date:'dd/MM/yyyy HH:mm'}} </p>
+        </br>
+        <p>
+          {{visita.text}}
+        </p>
+      </ion-item>
+
+      <ion-item ng-repeat="visita in objeto.ocorrencias" ng-if="visitasModalTitle == 'Ocorrências'">
+        <p>Data: {{visita.data | date:'dd/MM/yyyy HH:mm'}} </p>
+        </br>
+        <p>
+          {{visita.text}}
+        </p>
+      </ion-item>
+
+      <ion-item ng-repeat="visita in objeto.devolucoes" ng-if="visitasModalTitle == 'Devoluções'">
+        <p>Data: {{visita.data | date:'dd/MM/yyyy HH:mm'}} </p>
+        </br>
+        <p>
+          {{visita.text}}
+        </p>
+      </ion-item>
+    </ion-list>
+
+  </ion-content>
+  <div keyboard-attach class="bar bar-footer bar-stable item-input-inset slack-menssage-bar">
+    <!--<i class="icon ion-ios-plus-outline"></i>-->
+    <label class="item-input-wrapper">
+      <input type="text" placeholder="Menssagem"  ng-model="texto">
+    </label>
+    <div ng-click="enviar(texto)"  class="button button-clear button-positive">
+      Enviar
+    </div>
+
+  </div>
+</ion-modal-view>
+<!--
+ng-click="sendMessage(message)"-->
+<!--
+ng-focus="ajustarScroll()" ng-blur="ajustarScroll()"-->

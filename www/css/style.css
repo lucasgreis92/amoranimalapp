@@ -1,0 +1,67 @@
+.fade.ng-enter {
+  transition:1.5s linear all;
+  opacity:0;
+}
+
+/* The finishing CSS styles for the enter animation */
+.fade.ng-enter.ng-enter-active {
+  opacity:1;
+}
+
+/* Empty. Add your own CSS if you like */
+/*login*/
+.logo img{
+	width:130px;
+	}
+.logo{
+	margin:25px 0;
+	display:block;
+	text-align:center
+	}
+.login_page {
+    margin: 0
+    }
+.login_page h3{
+	color:#ff9900;
+	font-size:19px;
+	font-weight:normal;
+	text-align:center
+	}	
+.login_page .list-inset .item{
+	padding:7px 16px;
+	}	
+.login_page .list-inset .item:first-child{
+	border-top-left-radius: 8px;
+	border-top-right-radius: 8px;
+	}
+.login_page .list-inset .item:last-child{
+	border-radius:0 0 8px 8px
+	}	
+.login_page .item-input .icon {
+	padding-right:10px;
+	color:#ff9900;
+	width:27px;
+	}
+.login_page .button.button-positive{
+	border:none;
+	border-radius:5px;
+	box-shadow:none;
+	color:#fff;
+	min-height:43px
+	}
+.login_page .button.button-positive.log_btn{
+	background:#ff9900;
+	}	
+.login_page .button.button-positive.reg_btn{
+	background:#2a2b33;
+	}	
+.login_page .button.button-positive.for_btn{
+	background:transparent;
+	color:#2a2b33;
+	min-height:30px;
+	margin:0;
+	font-size:14px;
+	}	
+.login_page .button.button-positive.log_face{
+	background:#4463b1;
+	}

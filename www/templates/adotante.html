@@ -7,9 +7,9 @@
       <p ng-if="adotante.nomeAnimal">Animal: {{adotante.nomeAnimal}} ({{adotante.tpAnimal}})</p>
     </div>
 
-
+    <form name="form">
     <div class="item item-body">
-      <img class="full-image" ng-src="{{adotante.urlImagem}}" ng-click="getCamera()">
+      <img class="full-image" ng-src="{{adotante.urlImagem}}" ng-click="getCamera()" required>
       <visita-ocorrencia qt-ocorrencias="{{adotante.ocorrencias.length}}"
                          qt-visitas="{{adotante.visitas.length}}"
                          id-adotante={{adotante.id}}
@@ -20,47 +20,50 @@
       <div class="list">
         <div class="item item-input-inset">
           <label class="item-input-wrapper">
-            <input type="text" placeholder="Nome" ng-model="adotante.nome">
+            <input type="text" placeholder="Nome *" ng-model="adotante.nome" required>
           </label>
         </div>
         <div class="item item-input-inset">
           <label class="item-input-wrapper">
-            <input type="text" placeholder="CPF" ng-model="adotante.cpf">
+            <input type="text" placeholder="CPF *" ng-model="adotante.cpf" required>
           </label>
         </div>
         <div class="item item-input-inset">
           <label class="item-input-wrapper">
-            <input type="text" placeholder="RG" ng-model="adotante.rg">
+            <input type="text" placeholder="CEP *"
+                   ng-model="adotante.cep"
+                   ng-blur="loadCep()"
+                   required>
           </label>
         </div>
         <div class="item item-input-inset">
           <label class="item-input-wrapper">
-            <input type="text" placeholder="CEP" ng-model="adotante.cep">
+            <input type="text" placeholder="Cidade *" ng-model="adotante.cidade" required>
           </label>
         </div>
         <div class="item item-input-inset">
           <label class="item-input-wrapper">
-            <input type="text" placeholder="Logradouro">
+            <input type="text" placeholder="Bairro *" ng-model="adotante.bairro" required>
           </label>
         </div>
         <div class="item item-input-inset">
           <label class="item-input-wrapper">
-            <input type="text" placeholder="Nº" ng-model="adotante.numero">
+            <input type="text" placeholder="Logradouro *" ng-model="adotante.logradouro" required>
           </label>
         </div>
         <div class="item item-input-inset">
           <label class="item-input-wrapper">
-            <input type="text" placeholder="Bairro" ng-model="adotante.bairro">
+            <input type="text" placeholder="Nº *" ng-model="adotante.numero" required>
           </label>
         </div>
         <div class="item item-input-inset">
           <label class="item-input-wrapper">
-            <input type="text" placeholder="Cidade" ng-model="adotante.cidade">
+            <input type="text" placeholder="Complemento" ng-model="adotante.complemento">
           </label>
         </div>
         <div class="item item-input-inset">
           <label class="item-input-wrapper">
-            <input type="text" placeholder="Telefone 1" ng-model="adotante.tel1">
+            <input type="text" placeholder="Telefone 1 *" ng-model="adotante.tel1" required>
           </label>
         </div>
         <div class="item item-input-inset">
@@ -74,9 +77,10 @@
           <ion-radio name="sexo" ng-model="adotante.sexo" ng-value="'Feminino'">Feminino</ion-radio>
         </ion-list>
       </div>
-      <button class="button button-block button-balanced" ng-click="salvar()">
+      <button class="button button-block button-balanced" ng-click="salvar()" ng-disabled="!form.$valid">
         Salvar
       </button>
     </div>
+    </form>
   </ion-content>
 </ion-view>

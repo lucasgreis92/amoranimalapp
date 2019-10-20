@@ -28,6 +28,7 @@
     "cordova-android": "^8.1.0",
     "cordova-browser": "^6.0.0",
     "cordova-plugin-camera": "^4.1.0",
+    "cordova-plugin-geolocation": "^4.0.2",
     "ionic": "^5.2.6"
   },
   "cordova": {
@@ -40,7 +41,8 @@
       "cordova-plugin-ionic-keyboard": {},
       "cordova-plugin-camera": {
         "ANDROID_SUPPORT_V4_VERSION": "27.+"
-      }
+      },
+      "cordova-plugin-geolocation": {}
     },
     "platforms": [
       "browser",

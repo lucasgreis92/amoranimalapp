@@ -1,21 +1,51 @@
 angular.module('starter.controllers', [])
 
-  .controller('LoginCtrl', function($rootScope, $scope, AnimalService, $rootScope) {
+  .controller('LoginCtrl', function($rootScope, $scope, AnimalService, $rootScope,UsuarioService) {
     $rootScope.isSearching = false;
     $rootScope.headerVisible = false;
+    $scope.usuario = {};
+    $scope.autenticar = function() {
+      UsuarioService.autenticar($scope.usuario,function(res){
+        if (res){
+          $rootScope.goMap();
+        }else{
+          $scope.erro = 'Usuário ou senha inválido!';
+        }
+
+      });
+
+
+
+    }
   })
 
   .controller('AnimaisCtrl', function($rootScope, $scope, AnimalService, $rootScope) {
     $rootScope.isIOS = ionic.Platform.isIOS();
     $rootScope.isSearching = false;
     $rootScope.headerVisible = true;
+    $scope.query = undefined;
     AnimalService.findAll(function (res) {
       $scope.animais = res;
+      $scope.animaisBackup = res;
     });
+
+    $scope.filtrar = function (query){
+      if (query && query.trim() !== '') {
+        $scope.animais = $scope.animaisBackup
+          .filter(function(animal){
+            return animal.nome && animal.nome.toUpperCase().startsWith(query.toUpperCase());
+          });
+      }else{
+        $scope.animais = $scope.animaisBackup;
+      }
+
+    };
 
   })
 
-  .controller('AnimalCtrl', function($rootScope, $scope, $stateParams, AnimalService, CameraService) {
+  .controller('AnimalCtrl', function($rootScope, $scope, $stateParams,
+                                     AnimalService, CameraService, $ionicModal,
+                                     AdotanteService, AdocaoService ) {
     $scope.$on('$destroy', function() {
     });
     $rootScope.isSearching = false;
@@ -42,9 +72,60 @@ angular.module('starter.controllers', [])
       });
     };
     $scope.salvar = function()  {
+
       AnimalService.save($scope.animal,function(res){
         $scope.animal = res;
       });
+    };
+    $scope.adotar = function(){
+      $scope.openPesquisarAdotante();
+
+    };
+
+    $scope.query = undefined;
+    $scope.adotantesBackup = [];
+    $scope.filtrarAdotante = function (query){
+      if (query && query.trim() !== '') {
+        $scope.adotantes = $scope.adotantesBackup
+          .filter(function (adotante) {
+            return (adotante.nome && adotante.nome.toUpperCase().startsWith(query.toUpperCase()))
+              || (adotante.cpf && adotante.cpf.startsWith(query));
+          });
+      }else{
+        $scope.adotantes = $scope.adotantesBackup;
+      }
+    };
+
+    $scope.selecionarAdotante = function(adotante){
+      var adocao = {
+        animal : $scope.animal,
+        adotante: adotante
+      };
+      AdocaoService.save(adocao,function(adocao){
+        $scope.closePesquisarAdotante();
+        $rootScope.goAcompanhamentos();
+      });
+    }
+
+    $scope.openPesquisarAdotante = function() {
+
+      AdotanteService.findAllAtivo(function (res) {
+        $scope.adotantes = res;
+        $scope.adotantesBackup = res;
+
+        $ionicModal.fromTemplateUrl('templates/adotantesmodal.html', {
+          animation: 'slide-in-up',
+          scope : $scope
+
+        }).then(function(modal) {
+          $scope.pesquisarAdotante = modal;
+          $scope.pesquisarAdotante.show();
+        });
+      });
+
+    };
+    $scope.closePesquisarAdotante = function() {
+      $scope.pesquisarAdotante.hide();
     };
 
   })
@@ -88,6 +169,16 @@ angular.module('starter.controllers', [])
       $scope.adotante.sexo = 'Masculino';
     }
 
+    $scope.loadCep = function(){
+      if ($scope.adotante.cep && $scope.adotante.cep !== ''){
+        AdotanteService.findEnderecoByCep($scope.adotante.cep, function(res){
+          $scope.adotante.bairro = res.bairro;
+          $scope.adotante.logradouro  = res.logradouro;
+          $scope.adotante.cidade  = res.localidade;
+        });
+      }
+    }
+
     $scope.getCamera = function(){
       CameraService.callCamera(function(imagem){
         $scope.adotante.urlImagem = imagem;
@@ -105,9 +196,23 @@ angular.module('starter.controllers', [])
     $rootScope.isIOS = ionic.Platform.isIOS();
     $rootScope.isSearching = false;
     $rootScope.headerVisible = true;
+    $scope.query = undefined;
     AdotanteService.findAll(function (res) {
       $scope.adotantes = res;
+      $scope.adotantesBackup = res;
     });
+
+    $scope.filtrar = function (query){
+      if (query && query.trim() !== '') {
+        $scope.adotantes = $scope.adotantesBackup
+          .filter(function (adotante) {
+            return (adotante.nome && adotante.nome.toUpperCase().startsWith(query.toUpperCase()))
+              || (adotante.cpf && adotante.cpf.startsWith(query));
+          });
+      }else{
+        $scope.adotantes = $scope.adotantesBackup;
+      }
+    };
 
   })
 
@@ -119,6 +224,73 @@ angular.module('starter.controllers', [])
     });
     $rootScope.isSearching = false;
     $rootScope.headerVisible = true;
+  })
+
+  .controller('LocalizacaoCtrl', function($rootScope, $scope, AdocaoService, $rootScope) {
+    $rootScope.isIOS = ionic.Platform.isIOS();
+    $rootScope.headerVisible = true;
+
+    $scope.loadScript = function() {
+      var script = document.createElement('script');
+      script.type = 'text/javascript';
+      script.src = 'https://maps.googleapis.com/maps/api/js?key=AIzaSyA4raLcSftr4D_f0-hyb-DeMiVZnNhzOUc';
+      document.body.appendChild(script);
+
+      $scope.initialize = function() {
+
+        navigator.geolocation.getCurrentPosition($scope.showPosition);
+
+      }
+
+      $scope.showPosition = function(position)  {
+        console.log(position);
+        var mapOptions = {
+          center: new google.maps.LatLng(position.coords.latitude, position.coords.longitude),
+          zoom: 10,
+          mapTypeId: google.maps.MapTypeId.ROADMAP
+        };
+        $scope.map = new google.maps.Map(document.getElementById("mapagoogle"),
+          mapOptions);
+      //  document.getElementsByClassName('gm-svpc')[0].style.visibility = 'hidden';
+      }
+
+
+      setTimeout(function() {
+        $scope.initialize();
+        AdocaoService.findAll(function (res) {
+          $scope.adocoes = res;
+          console.log($scope.adocoes);
+          $scope.adocoes.forEach(function(ado){
+            var ponto = new google.maps.LatLng(ado.adotante.location.y,ado.adotante.location.x);
+            var marker = new google.maps.Marker({
+              position: ponto,//seta posição
+              map: $scope.map,//Objeto mapa
+              title:ado.adotante.nome + '(' + ado.animal.nome + ')',//string que será exibida quando passar o mouse no marker
+              icon: 'img/logoico.png'
+            });
+            if (!ado.adotante.dtUltAcomp){
+              ado.adotante.dtUltAcomp = ' - ';
+            }
+            var content = '<div>' +
+   /*           '          <img src=' + ado.adotante.urlImagem+'>\n' +*/
+              '          <p>Adotante: ' + ado.adotante.nome + '</p>' +
+              '          <p>Animal: ' + ado.animal.nome+' (' + ado.animal.tpAnimal + ')</p>\n' +
+              '          <p>Endereço:' + ado.adotante.cidade +', '+ado.adotante.logradouro+ ', ' + ado.adotante.numero +', ' + ado.adotante.bairro+'</p>\n' +
+              '          <p>Última visita: ' + ado.adotante.dtUltAcomp +'</p>\n' +
+              '        </div>';
+
+            var infowindow = new google.maps.InfoWindow(), marker;
+            google.maps.event.addListener(marker, 'click', (function(marker, i) {
+              return function() {
+                infowindow.setContent(content);
+                infowindow.open($scope.map, marker);
+              };
+            })(marker));
+          });
+        });
+      }, 2000);
+    };
+
   })
 
   .directive('visitaOcorrencia', function() {
@@ -134,23 +306,25 @@ angular.module('starter.controllers', [])
       qtDevolucoes : '@',
       idAdotante : '@',
       idAnimal : '@',
-      idAdocao : '@'
+      idAdocao : '@',
+      efetuacomentario: '@'
     };
-    ddo.controller = function($rootScope,$scope,$ionicModal, AdotanteService, AnimalService, AdocaoService  ){
+    ddo.controller = function($rootScope,$scope,$ionicModal,
+                              AdotanteService, AnimalService, AdocaoService  ){
 
       $scope.showVisitasModal = function(title){
         $scope.texto = '';
-        if ($scope.idAdotante){
+        if ($scope.idAdotante) {
           AdotanteService.findById($scope.idAdotante,function(res){
             $scope.objeto = res;
             $scope.openModal(title);
           });
-        }else if ($scope.idAnimal){
+        } else if ($scope.idAnimal) {
           AnimalService.findById($scope.idAnimal,function(res){
             $scope.objeto = res;
             $scope.openModal(title);
           });
-        }else if($scope.idAdocao){
+        } else if($scope.idAdocao) {
           AdocaoService.findById($scope.idAdocao,function(res){
             $scope.objeto = res;
             $scope.openModal(title);
@@ -174,24 +348,25 @@ angular.module('starter.controllers', [])
         };
 
         $scope.enviar = function(texto){
-          console.log(texto);
           if ($scope.visitasModalTitle == 'Devoluções'){
             $scope.objeto.devolucoes.push({
               text : texto,
               data: new Date().toISOString().replace('Z',''),
-
+              nova: true
             });
             $scope.qtDevolucoes++;
           }else if ($scope.visitasModalTitle == 'Ocorrências') {
             $scope.objeto.ocorrencias.push({
               text : texto,
-              data: new Date().toISOString().replace('Z','')
+              data: new Date().toISOString().replace('Z',''),
+              nova: true
             });
             $scope.qtOcorrencias++;
           }else if ($scope.visitasModalTitle == 'Visitas'){
             $scope.objeto.visitas.push({
               text : texto,
-              data: new Date().toISOString().replace('Z','')
+              data: new Date().toISOString().replace('Z',''),
+              nova: true
             });
             $scope.qtVisitas++;
           }

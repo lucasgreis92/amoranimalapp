@@ -1,0 +1,27 @@
+<ion-view view-title="Adotantes">
+  <ion-content>
+    <div class="bar bar-header bar-stable" >
+      <button class="button button-outline button-light" ng-click="closePesquisarAdotante()" >
+        Voltar
+      </button>
+    </div>
+    <div class="bar bar-subheader item-input-inset" >
+      <label class="item-input-wrapper" style="border-radius: 17px">
+        <i class="icon ion-ios-search placeholder-icon"></i>
+        <input type="search" placeholder="Pesquisar..." ng-model="query" ng-change="filtrarAdotante(query)">
+      </label>
+    </div>
+    <div class="has-header" style="margin-top: 45px;">
+      <div class="item item-avatar item-button-right" ng-repeat="adotante in adotantes">
+        <img ng-src="{{adotante.urlImagem}}"/>
+        <h2>Adotante: {{adotante.nome}}</h2>
+        <p ng-if="adotante.nomeAnimal">Animal: {{adotante.nomeAnimal}} ({{adotante.tpAnimal}})</p>
+        <button class="button button-balanced" ng-click="selecionarAdotante(adotante)" ng-if="!adotante.devolucoes.length > 0">
+          <i class="icon ion-ios-checkmark"></i>
+        </button>
+      </div>
+    </div>
+
+  </ion-content>
+
+</ion-view>

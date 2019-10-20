@@ -4,13 +4,17 @@ Each tab's child <ion-nav-view> directive will have its own
 navigation history that also transitions its views in and out.
 -->
 
-<ion-tabs class="tabs-icon-top tabs-energized tabs-color-active-light" >
+<ion-tabs class="tabs-icon-top tabs-stable tabs-color-dark tabs-color-active-dark" >
 
-  <ion-tab title="Adoções" icon-off="ion-podium" icon-on="ion-podium" href="#/tab/acompanhamentos" >
+  <ion-tab title="Localizações" icon-off="ion-ios7-world-outline" icon-on="ion-ios7-world" href="#/tab/localizacao" >
+    <ion-nav-view name="tab-loc" ></ion-nav-view>
+  </ion-tab>
+
+  <ion-tab title="Adoções" icon-off="ion-ios7-settings" icon-on="ion-ios7-settings-strong" href="#/tab/acompanhamentos" >
     <ion-nav-view name="tab-acompanhamentos" ></ion-nav-view>
   </ion-tab>
 
-  <ion-tab title="Adotantes" icon-off="ion-person-stalker" icon-on="ion-person-stalker" href="#/tab/adotantes">
+  <ion-tab title="Adotantes" icon-off="ion-ios7-people-outline" icon-on="ion-ios7-people" href="#/tab/adotantes">
     <ion-nav-view name="tab-adotantes"></ion-nav-view>
   </ion-tab>
 

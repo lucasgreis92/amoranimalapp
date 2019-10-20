@@ -1,17 +1,24 @@
 <ion-view view-title="Adotantes">
   <ion-floating-button click="goAdotante()" has-footer="true" button-color="#ffff40" icon="ion-plus" icon-color="#fff">
   </ion-floating-button>
-  <ion-content>
-    <div class="list" ng-repeat="adotante in adotantes">
+  <ion-content >
+    <div class="bar bar-subheader item-input-inset" >
+      <label class="item-input-wrapper" style="border-radius: 17px">
+        <i class="icon ion-ios-search placeholder-icon"></i>
+        <input type="search" placeholder="Pesquisar..." ng-model="query" ng-change="filtrar(query)">
+      </label>
+    </div>
+    <div class="list has-header" ng-repeat="adotante in adotantes">
       <div class="item item-avatar" ng-click="goAdotante(adotante.id)">
         <img ng-src="{{adotante.urlImagem}}"/>
-
+ <!--       <div ng-style="{'background-image':'url('+adotante.urlImagem+')'}"></div>-->
         <h2>Adotante: {{adotante.nome}}</h2>
         <p ng-if="adotante.nomeAnimal">Animal: {{adotante.nomeAnimal}} ({{adotante.tpAnimal}})</p>
       </div>
 
       <div class="item item-body" style="border-bottom: none;">
-        <img class="full-image" ng-src="{{adotante.urlImagem}}" />
+  <!--      <img class="full-image" ng-src="{{adotante.urlImagem}}" />-->
+<!--        <div class="full-image" ng-style="{'background-image':'url('+adotante.urlImagem+')'}"></div>-->
         <p>Último acompanhamento: {{adotante.dtUltAcomp | date:'dd/MM/yyyy'}}
           </br>
           Adoção: {{adotante.dtAdocao | date:'dd/MM/yyyy'}}

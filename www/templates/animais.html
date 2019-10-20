@@ -1,16 +1,24 @@
 <ion-view view-title="Animais">
   <ion-floating-button click="goAnimal()" has-footer="true" button-color="#ffff40" icon="ion-plus" icon-color="#fff">
   </ion-floating-button>
-  <ion-content>
-    <div class="list" ng-repeat="animal in animais" >
+  <ion-content >
+    <div class="bar bar-subheader item-input-inset" >
+      <label class="item-input-wrapper" style="border-radius: 17px">
+        <i class="icon ion-ios-search placeholder-icon"></i>
+        <input type="search" placeholder="Pesquisar..." ng-model="query" ng-change="filtrar(query)">
+      </label>
+    </div>
+    <div class="list has-header" ng-repeat="animal in animais" >
       <div class="item item-avatar" ng-click="goAnimal(animal.id)">
         <img ng-src="{{animal.urlImagem}}"/>
+    <!--    <div ng-style="{'background-image':'url('+animal.urlImagem+')'}"></div>-->
         <h2>Animal: {{animal.nome}} ({{animal.tpAnimal}})</h2>
         <p ng-if="animal.nomeAdotante">Adotante: {{animal.nomeAdotante}} </p>
       </div>
 
       <div class="item item-body" style="border-bottom: none;">
-        <img class="full-image" ng-src="{{animal.urlImagem}}"/>
+      <!--  <img class="full-image" ng-src="{{animal.urlImagem}}"/>-->
+<!--        <div class="full-image" ng-style="{'background-image':animal.urlImagem}"></div>-->
         <p>Último acompanhamento: {{animal.dtUltAcomp | date:'dd/MM/yyyy'}}</p>
         <p>Data de adoção: {{animal.dtAdocao | date:'dd/MM/yyyy'}} </p>
         <visita-ocorrencia qt-ocorrencias={{animal.ocorrencias.length}}

@@ -4,7 +4,8 @@ angular.module('starter.services', [])
     return {
       props: function() {
         return {
-          ip : 'http://ec2-54-202-0-205.us-west-2.compute.amazonaws.com:3000'
+          ip: 'http://ec2-54-202-0-205.us-west-2.compute.amazonaws.com:3000',
+          ip_: 'http://localhost:3000'
         };
       }
     };
@@ -41,6 +42,29 @@ angular.module('starter.services', [])
 
   })
 
+  .factory('UsuarioService', function($http,PropertiesService,$ionicLoading) {
+
+    return {
+      autenticar: function(usuario,success) {
+        $ionicLoading.show({
+          template: 'Loading...'
+        }).then(function(){
+        });
+        $http.post(PropertiesService.props().ip+'/rs/v1/usuarios/autenticar',usuario)
+          .success(function (res) {
+            if (success){
+              success(res);
+              $ionicLoading.hide();
+            }
+          })
+          .catch(function (err) {
+            $ionicLoading.hide();
+            alert(err);
+          });
+      }
+    };
+  })
+
   .factory('AnimalService', function($http,PropertiesService, $ionicLoading) {
     return {
       findById: function(id,success) {
@@ -66,7 +90,7 @@ angular.module('starter.services', [])
           template: 'Loading...'
         }).then(function(){
         });
-        $http.get(PropertiesService.props().ip+'/rs/v1/animais')
+        $http.get(PropertiesService.props().ip+'/rs/v1/animais/ativo')
           .success(function (res) {
             if (success){
               success(res);
@@ -84,7 +108,7 @@ angular.module('starter.services', [])
           template: 'Loading...'
         }).then(function(){
         });
-        $http.post(PropertiesService.props().ip+'/rs/v1/animais',animal)
+        $http.post(PropertiesService.props().ip+'/rs/v1/animais/salvar',animal)
           .success(function (res){
             if (success){
               success(res);
@@ -119,6 +143,24 @@ angular.module('starter.services', [])
           });
       },
 
+      findEnderecoByCep: function(cep,success){
+        $ionicLoading.show({
+          template: 'Loading...'
+        }).then(function(){
+        });
+
+        $http.get(PropertiesService.props().ip+'/rs/v1/adotantes/cep/'+cep)
+          .success(function (res) {
+            if (success){
+              success(res);
+              $ionicLoading.hide();
+            }
+          })
+          .catch(function (err) {
+            $ionicLoading.hide();
+            alert(err);
+          });
+      },
       findAll: function (success) {
         $ionicLoading.show({
           template: 'Loading...'
@@ -136,13 +178,29 @@ angular.module('starter.services', [])
             alert(err);
           });
       },
-
+      findAllAtivo: function (success) {
+        $ionicLoading.show({
+          template: 'Loading...'
+        }).then(function(){
+        });
+        $http.get(PropertiesService.props().ip+'/rs/v1/adotantes/ativo')
+          .success(function (res) {
+            if (success){
+              success(res);
+              $ionicLoading.hide();
+            }
+          })
+          .catch(function (err) {
+            $ionicLoading.hide();
+            alert(err);
+          });
+      },
       save: function(adotante,success) {
         $ionicLoading.show({
           template: 'Loading...'
         }).then(function(){
         });
-        $http.post(PropertiesService.props().ip+'/rs/v1/adotantes',adotante)
+        $http.post(PropertiesService.props().ip+'/rs/v1/adotantes/salvar',adotante)
           .success(function (res){
             if (success){
               success(res);
@@ -183,7 +241,7 @@ angular.module('starter.services', [])
           template: 'Loading...'
         }).then(function(){
         });
-        $http.get(PropertiesService.props().ip+'/rs/v1/adocoes')
+        $http.get(PropertiesService.props().ip+'/rs/v1/adocoes/ativo')
           .success(function (res) {
             if (success){
               success(res);
@@ -201,7 +259,7 @@ angular.module('starter.services', [])
           template: 'Loading...'
         }).then(function(){
         });
-        $http.post(PropertiesService.props().ip+'/rs/v1/adocoes',adocao)
+        $http.post(PropertiesService.props().ip+'/rs/v1/adocoes/salvar',adocao)
           .success(function (res){
             if (success){
               success(res);

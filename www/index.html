@@ -11,6 +11,7 @@
   <link href="css/style.css" rel="stylesheet">
   <link href="css/animate.css" rel="stylesheet">
   <link href="lib/ion-floating-menu/dist/ion-floating-menu.css" rel="stylesheet" type="text/css"/>
+  <link rel="stylesheet" href="http://code.ionicframework.com/ionicons/1.5.2/css/ionicons.min.css"/>
   <script src="lib/ionic/js/ionic.bundle.js"></script>
 
   <!-- cordova script (this will be a 404 during development) -->
@@ -22,37 +23,58 @@
   <script src="js/services.js"></script>
   <script src="lib/ion-floating-menu/dist/ion-floating-menu.js" type="text/javascript"></script>
 
+ <!-- <script src="http://cdnjs.cloudflare.com/ajax/libs/lodash.js/4.0.1/lodash.js" type="text/javascript"></script>
+  <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDC0CYVU7Rt6w7vWiNnSxB7aMLQYcecY18"></script>-->
+  <script type="text/javascript">
+    function initialize() {
 
+          navigator.geolocation.getCurrentPosition(showPosition);
 
+    }
+
+    function showPosition(position)
+    {
+      var mapOptions = {
+        center: new google.maps.LatLng(position.coords.latitude, position.coords.longitude),
+        zoom: 15,
+        mapTypeId: google.maps.MapTypeId.ROADMAP
+      };
+      var map = new google.maps.Map(document.getElementById("mapagoogle"),
+        mapOptions);
+      document.getElementsByClassName('gm-svpc')[0].style.visibility = 'hidden';
+    }
+
+/*    function initialize() {
+      var mapOptions = {
+        center: new google.maps.LatLng(-34.397, 150.644),
+        zoom: 8,
+        mapTypeId: google.maps.MapTypeId.ROADMAP
+      };
+
+      var map = new google.maps.Map(document.getElementById("mapagoogle"),
+        mapOptions);
+      document.getElementsByClassName('gm-svpc')[0].style.visibility = 'hidden';
+    }*/
+  </script>
 </head>
 <body ng-app="starter">
 
-<ion-nav-bar class="bar-energized fade" ng-if="headerVisible && !isSearching">
-
-  <ion-nav-back-button>
-  </ion-nav-back-button>
-  <ion-nav-buttons side="center">
-
-  </ion-nav-buttons>
-  <ion-nav-buttons side="right" >
-    <button class="button button-icon button-clear ion-ios-search-strong " ng-click="startSearch()">
-    </button>
-    <button class="button button-outline button-light" ng-click="goLogin()" >
-      Sair
-    </button>
-  </ion-nav-buttons>
-</ion-nav-bar>
-
 <ion-nav-view >
-  <div class="bar bar-header bar-energized item-input-inset fade" ng-if="headerVisible && isSearching">
-    <label class="item-input-wrapper">
-      <i class="icon ion-ios-search placeholder-icon"></i>
-      <input type="search" placeholder="Search">
-    </label>
-    <button class="button icon-left ion-close-circled" ng-click="stopSearch()">
-      Cancel
-    </button>
-  </div>
+  <ion-nav-bar class="bar-stable" ng-if="headerVisible">
+
+    <ion-nav-back-button>
+    </ion-nav-back-button>
+    <ion-nav-buttons side="center">
+
+    </ion-nav-buttons>
+    <ion-nav-buttons side="right" >
+      <button class="button button-outline button-light" ng-click="goLogin()" >
+        Sair
+      </button>
+    </ion-nav-buttons>
+
+  </ion-nav-bar>
+
 </ion-nav-view>
 </body>
 </html>

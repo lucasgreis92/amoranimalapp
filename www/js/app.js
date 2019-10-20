@@ -11,6 +11,9 @@ angular.module('starter', ['ionic', 'ion-floating-menu','starter.controllers', '
       if (window.StatusBar) {
         StatusBar.styleDefault();
       }
+
+
+
       $rootScope.goAnimal = function(animalId){
         $state.go('tab.animal',{animalId:animalId});
       }
@@ -29,6 +32,10 @@ angular.module('starter', ['ionic', 'ion-floating-menu','starter.controllers', '
         $rootScope.isSearching = true;
         $rootScope.headerVisible = true;
       };
+      $rootScope.goMap = function(){
+        $rootScope.headerVisible = true;
+        $state.go('tab.loc');
+      }
       $rootScope.goAcompanhamentos = function(){
         $rootScope.headerVisible = true;
         $state.go('tab.acompanhamentos');
@@ -56,7 +63,9 @@ angular.module('starter', ['ionic', 'ion-floating-menu','starter.controllers', '
     });
   })
 
-  .config(function($stateProvider, $urlRouterProvider) {
+  .config(function($stateProvider, $urlRouterProvider, $ionicConfigProvider) {
+
+    $ionicConfigProvider.tabs.position('bottom');
 
     $stateProvider
       .state('tab', {
@@ -124,6 +133,16 @@ angular.module('starter', ['ionic', 'ion-floating-menu','starter.controllers', '
           'tab-acompanhamentos':{
             templateUrl: 'templates/adocao.html',
             controller: 'AdocaoCtrl'
+          }
+        }
+      })
+      .state('tab.loc',{
+        url: '/localizacao',
+        cache:false,
+        views: {
+          'tab-loc':{
+            templateUrl: 'templates/map.html',
+            controller: 'LocalizacaoCtrl'
           }
         }
       })
